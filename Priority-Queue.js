@@ -5,7 +5,7 @@ class Node {
   }
 }
 
-class PrioriyQueue {
+class PriorityQueue {
   constructor() {
     this.values = [];
   }
