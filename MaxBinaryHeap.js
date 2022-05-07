@@ -1,67 +1,67 @@
-class MaxHeap {
+class MaxBinaryHeap {
     constructor() {
         this.values = [];
     }
-    
-    addMax(value) {
-        this.values.push(value);
+
+    insert(val) {
+        this.values.push(val);
         this.bubbleUp();
     }
-    
+
     bubbleUp() {
-        let idx = this.values.length - 1;
-        const element = this.values[idx];
-        while(idx > 0){
-            let parentIdx = Math.floor((idx - 1)/2);
+        let currentIdx = this.values.length - 1;
+        let current = this.values[currentIdx];
+
+        while (currentIdx > 0) {
+            let parentIdx = Math.floor((currentIdx - 1) / 2);
             let parent = this.values[parentIdx];
-            if(element[1] <= parent[1]) break;
-            this.values[parentIdx] = element;
-            this.values[idx] = parent;
-            idx = parentIdx;
-        } 
+            if (parent >= current) break;
+            this.values[currentIdx] = parent;
+            this.values[parentIdx] = current;
+            currentIdx = parentIdx;
+        }
     }
-    
+
     extractMax() {
         let max = this.values[0];
         let min = this.values.pop();
-        
-       if (this.values.length > 0) {
+
+        if (this.values.length > 0) {
             this.values[0] = min;
             this.trickleDown();
         }
-        
-        return max[0];
+
+        return max;
     }
-    
+
     trickleDown() {
-  let idx = 0;
+        let idx = 0;
+        let current = this.values[0];
         const length = this.values.length;
-        const element = this.values[0];
-        while(true){
+
+        while (true) {
             let leftChildIdx = 2 * idx + 1;
             let rightChildIdx = 2 * idx + 2;
-            let leftChild,rightChild;
             let swap = null;
+            let rightChild, leftChild;
 
-            if(leftChildIdx < length){
-                leftChild = this.values[leftChildIdx];
-                if(leftChild[1] > element[1]) {
-                    swap = leftChildIdx;
-                }
+            if (leftChildIdx < length) {
+                leftChild = this.values[leftChildIdx]; 
+                if (current < leftChild) swap = leftChildIdx;
             }
-            if(rightChildIdx < length){
+
+            if (rightChildIdx < length) {
                 rightChild = this.values[rightChildIdx];
-                if(
-                    (swap === null && rightChild[1] > element[1]) || 
-                    (swap !== null && rightChild[1] > leftChild[1])
-                ) {
-                   swap = rightChildIdx;
+                if ((swap !== null && leftChild < rightChild) || (swap === null && rightChild > current)) {
+                    swap = rightChildIdx;
                 }
             }
-            if(swap === null) break;
+
+            if (swap === null) break;
+
             this.values[idx] = this.values[swap];
-            this.values[swap] = element;
-            idx = swap;
+            this.values[swap] = current;
+            idx = swap; 
         }
     }
 }
